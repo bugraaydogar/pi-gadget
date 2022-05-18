@@ -1,5 +1,5 @@
 volumes:
-  bugra-model:
+  bugra-demo-model:
     schema: mbr
     bootloader: u-boot
     structure:

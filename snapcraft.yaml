@@ -1,5 +1,5 @@
 name: iotdevice-bugra-pi-gadget
-version: 20-1
+version: 20-2
 summary: Raspberry Pi gadget
 description: |
   Support files for booting Raspberry Pi.

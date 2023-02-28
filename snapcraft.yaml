@@ -1,4 +1,4 @@
-name: pi
+name: iotdevice-bgr-pi-gadget-22
 version: 22-2
 summary: Raspberry Pi gadget
 description: |
@@ -44,6 +44,25 @@ parts:
       - lsb-release
       - dpkg-dev
       - make
+  prepare-device:
+    plugin: nil
+    override-build: |
+      echo "Building the 'prepare-device' hook ..."
+      mkdir -p snap/hooks/
+      cat << EOF > snap/hooks/prepare-device
+      #!/bin/sh -ux
+      mkdir -p \$SNAP_COMMON
+      exec >> \$SNAP_COMMON/prepare-device-hook.log 2>&1
+      product_serial=\$(date -Is)
+      echo "product_serial:[\$product_serial]"
+      snapctl set registration.proposed-serial="\"\${product_serial}\""
+      snapctl set device-service.url="https://serial-vault.iotdevice.io/v1/"
+      snapctl set device-service.headers='{"api-key": "GYIJlLymT7WELxMinIrn74my8hd55cx4iMyXsnGKR2HevABpbGyg"}'
+      EOF
+
+      chmod +x snap/hooks/prepare-device
+      mkdir -p ${SNAPCRAFT_PART_INSTALL}/snap/hooks
+      cp snap/hooks/prepare-device ${SNAPCRAFT_PART_INSTALL}/snap/hooks
 
 slots:
   bcm-gpio-0:
